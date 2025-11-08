@@ -17,7 +17,7 @@ metadata/_snap_count = 2
 
 [node name="ReelInputCircle" type="Node2D"]
 script = ExtResource("1_b8nke")
-delta_scale = 40.0
+delta_scale = 60.0
 
 [node name="Direction" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_ggrta")

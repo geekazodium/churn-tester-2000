@@ -16,4 +16,4 @@ func _on_reel_input_circle_angular_v_updated(velocity: float) -> void:
 		fmt = ["second", "%.2f"];
 	else:
 		fmt = ["minute", "%.0f"];
-	self.text = ("rotations per %s: %s" % fmt) % [rotation_v];
+	self.text = ("rotations per %s: %s" % fmt) % [abs(rotation_v)];

@@ -1,12 +1,62 @@
-[gd_scene load_steps=5 format=3 uid="uid://cipsaigm3a7e0"]
+[gd_scene load_steps=13 format=3 uid="uid://cipsaigm3a7e0"]
 
 [ext_resource type="Script" uid="uid://b6da4as33uvw7" path="res://main_init.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bgx30m4j0mas8" path="res://reel_input_circle.tscn" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://c7nkqlui7j5hd" path="res://rotating_camera.gd" id="2_1bvp3"]
+[ext_resource type="Script" uid="uid://n84lqsqoharu" path="res://game_start_label.gd" id="2_5vw27"]
 [ext_resource type="Script" uid="uid://b5qi8tnbpln1t" path="res://rotation_speed_display.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://cim8fqj8x3626" path="res://game_status_label.gd" id="3_kek77"]
+[ext_resource type="Script" uid="uid://do7prhdqyygu1" path="res://ui_layer.gd" id="5_272bh"]
+[ext_resource type="Script" uid="uid://1fvbqm3vs6lk" path="res://retry_button.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://cdjj1e20w388g" path="res://results_display.gd" id="6_272bh"]
 
-[node name="Main" type="Node2D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
+bg_color = Color(0.32156864, 0.22745098, 0.3647059, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="InputEventAction" id="InputEventAction_1bvp3"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_lquwl"]
+events = [SubResource("InputEventAction_1bvp3")]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("reel_input_circle")]
 script = ExtResource("1_0xm2m")
+reel_input_circle = NodePath("ReelInputCircle")
+
+[node name="GameStartTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="GameStartLabel" type="Label" parent="GameStartTimer" node_paths=PackedStringArray("start_timer")]
+z_index = -1
+custom_minimum_size = Vector2(384, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -768.0
+offset_top = -568.0
+offset_right = -384.0
+offset_bottom = -436.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 96
+theme_override_styles/normal = SubResource("StyleBoxFlat_5vw27")
+text = "3"
+horizontal_alignment = 1
+uppercase = true
+script = ExtResource("2_5vw27")
+start_timer = NodePath("..")
+
+[node name="GameEndTimer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.9, 0.9)
@@ -15,6 +65,7 @@ zoom_change = 0.2
 
 [node name="ReelInputCircle" parent="." instance=ExtResource("1_ig7tw")]
 scale = Vector2(0.7, 0.7)
+delta_scale = 70.0
 
 [node name="SpeedDisplay" type="Label" parent="ReelInputCircle" node_paths=PackedStringArray("use_per_sec_toggle")]
 anchors_preset = 8
@@ -34,14 +85,64 @@ script = ExtResource("3_h2yge")
 use_per_sec_toggle = NodePath("../../CanvasLayer/HBoxContainer/UsePerSecondButton")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("5_272bh")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = -65.0
+offset_right = 186.0
+offset_bottom = -25.0
 
 [node name="UsePerSecondButton" type="CheckButton" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 text = "USE_PER_SECOND"
 
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -274.0
+offset_top = -55.0
+offset_right = 274.0
+offset_bottom = 55.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_272bh")
+
+[node name="ResultsLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Your Spin:"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+shortcut = SubResource("Shortcut_lquwl")
+text = "Retry"
+script = ExtResource("5_lquwl")
+
+[node name="GameStatusLabel" type="Label" parent="CanvasLayer" node_paths=PackedStringArray("main", "game_time_left")]
+visible = false
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 296.0
+offset_bottom = 135.0
+theme_override_font_sizes/font_size = 42
+text = "time: 20s
+rotations: 200"
+script = ExtResource("3_kek77")
+main = NodePath("../..")
+game_time_left = NodePath("../../GameEndTimer")
+
+[connection signal="game_ended" from="." to="CanvasLayer/VBoxContainer" method="_on_main_game_ended"]
+[connection signal="timeout" from="GameStartTimer" to="." method="_start_game"]
+[connection signal="timeout" from="GameStartTimer" to="CanvasLayer/GameStatusLabel" method="_on_game_start"]
+[connection signal="timeout" from="GameEndTimer" to="." method="_game_over"]
 [connection signal="angular_v_updated" from="ReelInputCircle" to="Camera2D" method="_on_reel_input_circle_angular_v_updated"]
 [connection signal="angular_v_updated" from="ReelInputCircle" to="ReelInputCircle/SpeedDisplay" method="_on_reel_input_circle_angular_v_updated"]

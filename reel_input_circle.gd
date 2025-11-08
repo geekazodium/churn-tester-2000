@@ -26,6 +26,8 @@ func enable() -> void:
 	self.angle = 0;
 	self.rolling_average_delta_v = 0;
 	self.last_input_direction = Vector2.UP;
+	if self.get_input_vec().length() > .01:
+		self.last_input_direction = self.get_input_vec().normalized();
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
