@@ -16,7 +16,7 @@ zoom_change = 0.2
 [node name="ReelInputCircle" parent="." instance=ExtResource("1_ig7tw")]
 scale = Vector2(0.7, 0.7)
 
-[node name="Control" type="Label" parent="ReelInputCircle"]
+[node name="SpeedDisplay" type="Label" parent="ReelInputCircle" node_paths=PackedStringArray("use_per_sec_toggle")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -31,6 +31,17 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "speed"
 script = ExtResource("3_h2yge")
+use_per_sec_toggle = NodePath("../../CanvasLayer/HBoxContainer/UsePerSecondButton")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UsePerSecondButton" type="CheckButton" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+text = "USE_PER_SECOND"
 
 [connection signal="angular_v_updated" from="ReelInputCircle" to="Camera2D" method="_on_reel_input_circle_angular_v_updated"]
-[connection signal="angular_v_updated" from="ReelInputCircle" to="ReelInputCircle/Control" method="_on_reel_input_circle_angular_v_updated"]
+[connection signal="angular_v_updated" from="ReelInputCircle" to="ReelInputCircle/SpeedDisplay" method="_on_reel_input_circle_angular_v_updated"]
