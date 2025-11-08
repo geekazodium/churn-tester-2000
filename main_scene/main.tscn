@@ -1,14 +1,13 @@
-[gd_scene load_steps=13 format=3 uid="uid://cipsaigm3a7e0"]
+[gd_scene load_steps=12 format=3 uid="uid://cipsaigm3a7e0"]
 
-[ext_resource type="Script" uid="uid://b6da4as33uvw7" path="res://main_init.gd" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://bgx30m4j0mas8" path="res://reel_input_circle.tscn" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://c7nkqlui7j5hd" path="res://rotating_camera.gd" id="2_1bvp3"]
-[ext_resource type="Script" uid="uid://n84lqsqoharu" path="res://game_start_label.gd" id="2_5vw27"]
-[ext_resource type="Script" uid="uid://b5qi8tnbpln1t" path="res://rotation_speed_display.gd" id="3_h2yge"]
-[ext_resource type="Script" uid="uid://cim8fqj8x3626" path="res://game_status_label.gd" id="3_kek77"]
-[ext_resource type="Script" uid="uid://do7prhdqyygu1" path="res://ui_layer.gd" id="5_272bh"]
-[ext_resource type="Script" uid="uid://1fvbqm3vs6lk" path="res://retry_button.gd" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://cdjj1e20w388g" path="res://results_display.gd" id="6_272bh"]
+[ext_resource type="Script" uid="uid://b6da4as33uvw7" path="res://main_scene/main_init.gd" id="1_tf6gq"]
+[ext_resource type="Script" uid="uid://n84lqsqoharu" path="res://main_scene/game_start_label.gd" id="2_1t12t"]
+[ext_resource type="Script" uid="uid://c7nkqlui7j5hd" path="res://main_scene/rotating_camera.gd" id="3_m8ysc"]
+[ext_resource type="PackedScene" uid="uid://bgx30m4j0mas8" path="res://input_circle/reel_input_circle.tscn" id="4_i5p2l"]
+[ext_resource type="Script" uid="uid://b5qi8tnbpln1t" path="res://main_scene/rotation_speed_display.gd" id="5_tcuig"]
+[ext_resource type="Script" uid="uid://cdjj1e20w388g" path="res://main_scene/results_display.gd" id="6_wykys"]
+[ext_resource type="Script" uid="uid://1fvbqm3vs6lk" path="res://main_scene/retry_button.gd" id="7_r65hd"]
+[ext_resource type="Script" uid="uid://cim8fqj8x3626" path="res://main_scene/game_status_label.gd" id="8_4lcg6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
 bg_color = Color(0.32156864, 0.22745098, 0.3647059, 1)
@@ -24,7 +23,7 @@ action = &"ui_accept"
 events = [SubResource("InputEventAction_1bvp3")]
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("reel_input_circle")]
-script = ExtResource("1_0xm2m")
+script = ExtResource("1_tf6gq")
 reel_input_circle = NodePath("ReelInputCircle")
 
 [node name="GameStartTimer" type="Timer" parent="."]
@@ -51,7 +50,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_5vw27")
 text = "3"
 horizontal_alignment = 1
 uppercase = true
-script = ExtResource("2_5vw27")
+script = ExtResource("2_1t12t")
 start_timer = NodePath("..")
 
 [node name="GameEndTimer" type="Timer" parent="."]
@@ -60,10 +59,10 @@ one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.9, 0.9)
-script = ExtResource("2_1bvp3")
+script = ExtResource("3_m8ysc")
 zoom_change = 0.2
 
-[node name="ReelInputCircle" parent="." instance=ExtResource("1_ig7tw")]
+[node name="ReelInputCircle" parent="." instance=ExtResource("4_i5p2l")]
 scale = Vector2(0.7, 0.7)
 delta_scale = 70.0
 
@@ -81,11 +80,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "speed"
-script = ExtResource("3_h2yge")
+script = ExtResource("5_tcuig")
 use_per_sec_toggle = NodePath("../../CanvasLayer/HBoxContainer/UsePerSecondButton")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("5_272bh")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
 offset_top = -65.0
@@ -109,7 +107,7 @@ offset_right = 274.0
 offset_bottom = 55.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("6_272bh")
+script = ExtResource("6_wykys")
 
 [node name="ResultsLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
@@ -125,7 +123,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 shortcut = SubResource("Shortcut_lquwl")
 text = "Retry"
-script = ExtResource("5_lquwl")
+script = ExtResource("7_r65hd")
 
 [node name="GameStatusLabel" type="Label" parent="CanvasLayer" node_paths=PackedStringArray("main", "game_time_left")]
 visible = false
@@ -136,7 +134,7 @@ offset_bottom = 135.0
 theme_override_font_sizes/font_size = 42
 text = "time: 20s
 rotations: 200"
-script = ExtResource("3_kek77")
+script = ExtResource("8_4lcg6")
 main = NodePath("../..")
 game_time_left = NodePath("../../GameEndTimer")
 
