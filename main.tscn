@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cipsaigm3a7e0"]
+[gd_scene load_steps=5 format=3 uid="uid://cipsaigm3a7e0"]
 
 [ext_resource type="Script" uid="uid://b6da4as33uvw7" path="res://main_init.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://bgx30m4j0mas8" path="res://reel_input_circle.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://c7nkqlui7j5hd" path="res://rotating_camera.gd" id="2_1bvp3"]
 [ext_resource type="Script" uid="uid://b5qi8tnbpln1t" path="res://rotation_speed_display.gd" id="3_h2yge"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.7, 0.7)
+script = ExtResource("2_1bvp3")
 
 [node name="ReelInputCircle" parent="." instance=ExtResource("1_ig7tw")]
 scale = Vector2(0.7, 0.7)
@@ -27,4 +30,5 @@ grow_vertical = 2
 text = "speed"
 script = ExtResource("3_h2yge")
 
+[connection signal="angular_v_updated" from="ReelInputCircle" to="Camera2D" method="_on_reel_input_circle_angular_v_updated"]
 [connection signal="angular_v_updated" from="ReelInputCircle" to="ReelInputCircle/Control" method="_on_reel_input_circle_angular_v_updated"]
