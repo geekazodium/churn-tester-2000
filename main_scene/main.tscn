@@ -124,6 +124,7 @@ theme_override_font_sizes/font_size = 32
 shortcut = SubResource("Shortcut_lquwl")
 text = "Retry"
 script = ExtResource("7_r65hd")
+grab_focus_when_vis = true
 
 [node name="GameStatusLabel" type="Label" parent="CanvasLayer" node_paths=PackedStringArray("main", "game_time_left")]
 visible = false

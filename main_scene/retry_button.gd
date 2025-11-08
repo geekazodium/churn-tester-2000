@@ -5,7 +5,11 @@ extends Button
 @export var hold_time: float = 0;
 var current_hold_time: float = 0;
 
+@export var grab_focus_when_vis: bool = false;
+
 func _process(delta: float) -> void:
+	if self.is_visible_in_tree() && self.grab_focus_when_vis:
+		self.grab_focus();
 	if self.button_pressed:
 		if self.current_hold_time >= self.hold_time:
 			self.get_tree().reload_current_scene();
