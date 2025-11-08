@@ -8,5 +8,4 @@ func _ready() -> void:
 
 func _on_reel_input_circle_angular_v_updated(velocity: float) -> void:
 	self.global_rotation_degrees = sqrt(abs(velocity)) * sign(velocity);
-	self.zoom = self.default_zoom * (1 + (1-exp(-abs(velocity))) * self.zoom_change);
-	print(self.global_rotation_degrees);
+	self.zoom = self.default_zoom * (1 + (1-exp(-abs(velocity) * .2)) * self.zoom_change);
