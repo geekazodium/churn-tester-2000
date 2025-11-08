@@ -138,6 +138,20 @@ script = ExtResource("8_4lcg6")
 main = NodePath("../..")
 game_time_left = NodePath("../../GameEndTimer")
 
+[node name="RetryButton" type="Button" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -158.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 69.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 32
+text = "RESTART"
+script = ExtResource("7_r65hd")
+hold_time = 1.0
+
 [connection signal="game_ended" from="." to="CanvasLayer/VBoxContainer" method="_on_main_game_ended"]
 [connection signal="timeout" from="GameStartTimer" to="." method="_start_game"]
 [connection signal="timeout" from="GameStartTimer" to="CanvasLayer/GameStatusLabel" method="_on_game_start"]
